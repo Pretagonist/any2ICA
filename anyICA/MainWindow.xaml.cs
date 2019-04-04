@@ -3,6 +3,12 @@ using System.Windows.Input;
 using WindowsInput.Native;
 using WindowsInput;
 
+//tasks that aren't properly localized
+//TODO Style selected item
+//TODO Mark items as done
+//TODO Get amounts in someway
+
+
 namespace anyICA
 {
     /// <summary>
@@ -51,6 +57,11 @@ namespace anyICA
             sim.Keyboard.Sleep(1000);
             sim.Keyboard.KeyPress(VirtualKeyCode.RETURN);
             //TODO Enter yes or no?
+
+            //TODO Mark previous as done
+
+            //scroll into center view
+            GroceryListBOX.ScrollToCenterOfView(GroceryListBOX.SelectedItem);
 
             //advance selection
             //TODO strangely never goes out of bounds at all. Investigate.

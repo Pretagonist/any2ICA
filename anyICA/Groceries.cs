@@ -31,10 +31,8 @@ namespace anyICA
         //method called when replacercollection changes or when the list needs to update
         public void DoReplacements()
         {
-            //run replacement loop
             foreach (GroceryItem g in Items)
             {
-
                 foreach (ReplacerItem r in replacer)
                 {
                     if (g.OriginalText.Equals(r.Original))
@@ -42,9 +40,7 @@ namespace anyICA
                         g.Name = r.Replacement;
                     }
                 }
-
-            }
-          
+            }         
         }
 
         internal void LoadFromFile()
@@ -112,9 +108,7 @@ namespace anyICA
                 }
 
             }
-            DoReplacements();
-
-            
+            DoReplacements();            
         }
 
 
