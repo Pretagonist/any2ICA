@@ -46,15 +46,16 @@
                 <DataTemplate>
                     <Grid Margin="0,2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="6*" />
+                            <ColumnDefinition Width="4*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="2*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
-               
-                        <TextBlock FontWeight="Bold" Text="{Binding Name}">
+
+                        <TextBlock FontWeight="Bold" Text="{Binding Name}" Grid.Column="1">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -66,8 +67,9 @@
                             </TextBlock.Style>
 
                         </TextBlock>
-                        <TextBlock Text="{Binding Description}" Grid.Row="1"/>
-                        <TextBlock Text="{Binding OriginalText}" Grid.Column="1"/>
+                        <TextBlock FontWeight="Bold" Text="{Binding Amount}" Grid.Column="0"/>
+                        <TextBlock Text="{Binding Description}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock Text="{Binding OriginalText}" Grid.Column="2"/>
      
                     </Grid>
     

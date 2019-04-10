@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace anyICA
@@ -98,7 +99,19 @@ namespace anyICA
             {
                 if (n.Attributes["class"].Value.Contains("name"))
                 {
-                    Add(new GroceryItem(Tools.RemoveSpecialCharacters(n.InnerHtml)));
+                    string itemName = Tools.RemoveSpecialCharacters(n.InnerHtml);
+                    int itemAmount = 1;
+                    //Separate out eventual amount data
+                    Regex matchParenthesis = new Regex(@"^(.*)\((\d+)\).*$");
+                    Match match = matchParenthesis.Match(itemName);
+                    if (match.Success)
+                    {
+                        itemName = match.Groups[1].Value;
+                        int.TryParse(match.Groups[2].Value,out itemAmount);
+                    }
+
+                    Add(new GroceryItem(itemName));
+                    this.Last().Amount = itemAmount;
                 }
                 else if (n.Attributes["class"].Value.Contains("details"))
                 {

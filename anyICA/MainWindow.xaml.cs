@@ -5,8 +5,9 @@ using WindowsInput;
 
 //tasks that aren't properly localized
 //TODO Style selected item
+//TODO Current item in hero bar
 //TODO Mark items as done
-//TODO Get amounts in someway
+//DONE Get amounts in someway
 
 
 namespace anyICA
