@@ -36,6 +36,87 @@ namespace anyICA
         }
     }
 
+    //public static class DataGridExtensions
+    //{
+    //    public static void SelectCellByIndex(DataGrid dataGrid, int rowIndex, int columnIndex)
+    //    {
+    //        if (!dataGrid.SelectionUnit.Equals(DataGridSelectionUnit.Cell))
+    //            throw new ArgumentException("The SelectionUnit of the DataGrid must be set to Cell.");
+
+    //        if (rowIndex < 0 || rowIndex > (dataGrid.Items.Count - 1))
+    //            throw new ArgumentException(string.Format("{0} is an invalid row index.", rowIndex));
+
+    //        if (columnIndex < 0 || columnIndex > (dataGrid.Columns.Count - 1))
+    //            throw new ArgumentException(string.Format("{0} is an invalid column index.", columnIndex));
+
+    //        dataGrid.SelectedCells.Clear();
+
+    //        object item = dataGrid.Items[rowIndex]; //=Product X
+    //        DataGridRow row = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
+    //        if (row == null)
+    //        {
+    //            dataGrid.ScrollIntoView(item);
+    //            row = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
+    //        }
+    //        if (row != null)
+    //        {
+    //            DataGridCell cell = GetCell(dataGrid, row, columnIndex);
+    //            if (cell != null)
+    //            {
+    //                DataGridCellInfo dataGridCellInfo = new DataGridCellInfo(cell);
+    //                dataGrid.SelectedCells.Add(dataGridCellInfo);
+    //                cell.Focus();
+    //            }
+    //        }
+    //    }
+    //    public static DataGridCell GetCell(this DataGrid grid, DataGridRow row, int columnIndex = 0)
+    //    {
+    //        if (row == null) return null;
+    //        row.
+    //        var presenter = row.FindVisualChild<DataGridCellsPresenter>();
+    //        if (presenter == null) return null;
+
+    //        var cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(columnIndex);
+    //        if (cell != null) return cell;
+
+    //        // now try to bring into view and retreive the cell
+    //        grid.ScrollIntoView(row, grid.Columns[columnIndex]);
+    //        cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(columnIndex);
+
+    //        return cell;
+    //    }
+    //    public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+    //    {
+    //        if (depObj != null)
+    //        {
+    //            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+    //            {
+    //                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+    //                if (child != null && child is T)
+    //                {
+    //                    yield return (T)child;
+    //                }
+
+    //                foreach (T childOfChild in FindVisualChildren<T>(child))
+    //                {
+    //                    yield return childOfChild;
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    public static childItem FindVisualChild<childItem>(DependencyObject obj)
+    //        where childItem : DependencyObject
+    //    {
+    //        foreach (childItem child in FindVisualChildren<childItem>(obj))
+    //        {
+    //            return child;
+    //        }
+
+    //        return null;
+    //    }
+    //}
+
     public static class Tools
     {
         public static string RemoveSpecialCharacters(string str)
@@ -43,6 +124,8 @@ namespace anyICA
             //return Regex.Replace(str, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled);
             return System.Net.WebUtility.HtmlDecode(str.Replace("\r", "").Replace("  ", ""));
         }
+
+        
 
     }
 

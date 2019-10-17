@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using WindowsInput.Native;
 using WindowsInput;
+using Nancy.Hosting.Self;
+using System;
+using System.Windows.Controls;
 
 //tasks that aren't properly localized
 //TODO Style selected item
@@ -17,7 +20,7 @@ namespace anyICA
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GroceryList groceryList = new GroceryList();
+        public GroceryList groceryList = new GroceryList();
         private ReplacerList replacerList = new ReplacerList();
 
         private InputSimulator sim = new InputSimulator();
@@ -44,6 +47,23 @@ namespace anyICA
 
             //create hotkey binding
             HotKey _hotKey = new HotKey(Key.A, KeyModifier.Shift | KeyModifier.Win, OnHotKeyHandler);
+
+            //setup Comms
+            var hostConfigs = new HostConfiguration
+            {
+                UrlReservations = new UrlReservations() { CreateAutomatically = true }
+            };
+            //using (var host = new NancyHost(hostConfigs, new Uri("http://localhost:8234")))
+
+            //{
+            NancyHost host = new NancyHost(hostConfigs, new Uri("http://localhost:8234"));
+                host.Start();
+                Console.WriteLine("Running on http://localhost:8234");
+                //Console.ReadLine();
+                //var comms = new Communicator();
+                
+            //};
+            
         }
 
         private void OnHotKeyHandler(HotKey hotKey)
@@ -66,13 +86,38 @@ namespace anyICA
 
             //advance selection
             //TODO strangely never goes out of bounds at all. Investigate.
-            GroceryListBOX.SelectedIndex++;
+            GroceryItem g;
+            do
+            {
+                GroceryListBOX.SelectedIndex++;
+                g = GroceryListBOX.SelectedItem as GroceryItem;
+            } while (g.Name == "!");
+            
+
+
             if (GroceryListBOX.SelectedIndex >= GroceryListBOX.Items.Count) GroceryListBOX.SelectedIndex = 0;
         }
 
+        public string GetItem()
+        {
+            //check if grocery is selected
+            if (GroceryListBOX.SelectedIndex < 0) return "Nothing selected!";
+
+            //scroll into center view
+            GroceryListBOX.ScrollToCenterOfView(GroceryListBOX.SelectedItem);
+            var ret = ((GroceryItem)GroceryListBOX.SelectedItem).Name;
+            GroceryListBOX.SelectedIndex++;
+            if (GroceryListBOX.SelectedIndex >= GroceryListBOX.Items.Count) GroceryListBOX.SelectedIndex = 0;
+
+            return ret;
+
+        }
+
+
+
         private void Ingest_BTN_Click(object sender, RoutedEventArgs e)
         {
-            groceryList.IngestFromClipboard();           
+            groceryList.IngestFromClipboard("HTML");           
         }
 
         private void Process_BTN_Click(object sender, RoutedEventArgs e)
@@ -97,6 +142,33 @@ namespace anyICA
             //TODO should be handled by groceryclass?
             ReplacerItem i = new ReplacerItem() { Original = ((GroceryItem)GroceryListBOX.SelectedItem).OriginalText };
             replacerList.Add(i);
+            //GroceryListBOX.ScrollToCenterOfView(GroceryListBOX.SelectedItem);
+            //ReplaceListDGC.ScrollToCenterOfView(ReplaceListDGC.SelectedItem);
+            //ReplaceListDGC.ScrollIntoView(ReplaceListDGC.Items[ReplaceListDGC.Items.Count - 1]);
+            ReplaceListDGC.Focus();
+            DataGridCellInfo cellInfo = new DataGridCellInfo(ReplaceListDGC.Items[ReplaceListDGC.Items.Count - 2], ReplaceListDGC.Columns[1]);
+            //set the cell to be the active one
+            ReplaceListDGC.CurrentCell = cellInfo;
+            //scroll the item into view
+            ReplaceListDGC.ScrollIntoView(ReplaceListDGC.Items[ReplaceListDGC.Items.Count - 2]);
+            //cellInfo.Focus();
+            ReplaceListDGC.BeginEdit();
+            ReplaceListDGC.UpdateLayout();
+
+
+
+            //var item = this.ReplaceListDGC.Items[ReplaceListDGC.Items.Count - 1];
+            //var column = this.ReplaceListDGC.Columns[2];
+            //var cellToEdit = new GridViewCellInfo(item, column, this.ReplaceListDGC);
+
+            //ReplaceListDGC.CurrentCellInfo = cellToEdit;
+            //ReplaceListDGC.BeginEdit();
+
+            //Tools.SelectCellByIndex(ReplaceListDGC, ReplaceListDGC.Items.Count - 1, 2);
+            //DataGridCell cell = GetCell(rowIndex, colIndex);
+            //cell.Focus;
+            //ReplaceListDGC.UpdateLayout();
+            //dataGridView.ScrollIntoView(DataGrid1.Items[itemIndex]);
 
         }
 
@@ -108,7 +180,10 @@ namespace anyICA
             //GroceryListBOX.Items.Refresh();
         }
 
-
+        private void JSON_Ingest_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            groceryList.IngestFromClipboard("JSON");
+        }
     }
 
 
